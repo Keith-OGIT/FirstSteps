@@ -1,4 +1,4 @@
-Enable SSH on both IOS devices
+Enable SSH on your IOS devices
 
 conf t
 ip domain-name cisco.com
@@ -118,7 +118,7 @@ sudo nano ShowIPIntBrief.yml
 
 ---
 - name: Issue show commands
-  hosts: 192.168.1.33
+  hosts: 192.168.1.34
   connection: local
   tasks:
     - name: Show ip int brief
@@ -126,7 +126,7 @@ sudo nano ShowIPIntBrief.yml
         commands:
           - show ip int brief
         provider:
-          host: 192.168.1.33
+          host: 192.168.1.34
           port: 22
           authorize: yes
           auth_pass: cisco
