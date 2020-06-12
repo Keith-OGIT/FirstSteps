@@ -1,0 +1,88 @@
+Raspberry Pi Terminal Server
+
+[O/S]
+Raspberry Pi OS 2020-05-27
+
+[S/W]
+Raspberry Pi Imager v1.3
+
+[H/W]
+Raspberry Pi 2 Model B  (with WiFi dongle)
+Raspberry Pi 3 Model B+
+
+[Cables Tested] 
+Old USB to 9 Pin Serial
+USB to Console cable
+Gearmo 4 Port USB to Serial
+
+
+[Update/Install S/W]
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get install telnet -y
+sudo apt-get install telnetd -y
+sudo apt-get install ser2net -y
+
+[Verify USB #]
+
+lsusb
+dmesg
+dmesg | grep tty
+
+[Edit Serial to Net Software to match USB#]
+
+sudo nano /etc/ser2net.conf
+
+2001:telnet:600:/dev/ttyUSB0:9600 8DATABITS NONE 1STOPBIT banner
+2002:telnet:600:/dev/ttyUSB1:9600 8DATABITS NONE 1STOPBIT banner
+2003:telnet:600:/dev/ttyUSB2:9600 8DATABITS NONE 1STOPBIT banner
+2004:telnet:600:/dev/ttyUSB3:9600 8DATABITS NONE 1STOPBIT banner
+
+
+[Save and Exit]
+
+Ctrl+x
+y
+
+[Enable ser2net each reboot]
+
+sudo nano /etc/rc.local
+ 
+/usr/sbin/ser2net -n
+exit 0
+
+Ctrl+x
+y
+
+[determine IP address]
+ip addr
+eth0, and/or wlan0
+
+[configure static IP for wlan0 or eth0]
+
+sudo nano /etc/dhcpcd.conf
+interface wlan0
+static ip_address=192.168.1.X/24
+static routers=192.168.1.1
+static domain_name_servers=192.168.1.1 8.8.8.8
+
+
+Ctrl+x
+y
+[Enter]
+
+sudo reboot
+
+Set your terminal emulator (putty, SecureCRT, etc)
+
+telnet 192.168.1.x  200x
+
+Gearmo 4 Port USB to Serial RS232 Adapter I used in the video:
+Affiliate link 👉🏼 https://amzn.to/3cYQFCh
+
+CanaKit Raspberry Pi 4 4GB Starter MAX Kit - 64GB Edition
+(Includes power supply, case, the works)
+Affiliate link 👉🏼 https://amzn.to/3hiUkhB
+
+
+
