@@ -1,0 +1,155 @@
+Enable SSH on both IOS devices
+
+conf t
+ip domain-name cisco.com
+username admin priv 15 secret cisco
+ip ssh ver 2
+crypto key gen rsa mod 1024
+line vty 0 4
+transport in all
+login local
+end
+
+Test from Linux
+
+ssh admin@A.B.C.D 
+
+Problems?
+no matching key exchange method found
+ or 
+no matching cipher found
+
+sudo nano /etc/ssh/ssh_config
+
+KexAlgorithms=curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc
+
+Install Ansible on the Pi
+
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get install -y ansible sshpass
+
+ansible --version
+
+sudo nano /etc/apt/sources.list
+(add)
+deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
+Ctrl+x
+y
+
+sudo apt install dirmngr -y
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+
+sudo apt-get update
+
+sudo apt-get upgrade -y
+
+sudo apt-get install -y ansible
+
+cd /etc/ansible
+
+ansible --version
+
+
+cd /etc/ansible
+
+sudo nano hosts
+
+(add at the bottom)
+[ios]
+
+192.168.1.33
+192.168.1.34
+
+Ctrl x
+y
+
+
+sudo nano ansible.cfg
+
+[defaults]
+interpreter_python = auto_legacy_silent
+gathering = explicit
+
+#if needed remove the "#" in front of 
+#host_key_checking = False
+
+Ctrl x
+y
+
+
+
+Create PlayBook: VerAndHost.yml
+
+sudo nano VerAndHost.yml
+
+---
+- name: Gather IOS Facts
+  hosts: 192.168.1.33
+  connection: local
+  tasks:
+    - name: Gather IOS Facts
+      ios_facts:
+        provider:
+          host: 192.168.1.33
+          port: 22
+          authorize: yes
+          auth_pass: cisco
+          username: admin
+          password: cisco
+
+    - name: What is the IOS OS ver?
+      debug:
+        var: ansible_net_version
+
+    - name: What is the hostname?
+      debug:
+        var: ansible_net_hostname
+...
+Ctrl+x
+y
+
+
+Create PlayBook: ShowIPIntBrief.yml
+
+sudo nano ShowIPIntBrief.yml
+
+---
+- name: Issue show commands
+  hosts: 192.168.1.33
+  connection: local
+  tasks:
+    - name: Show ip int brief
+      ios_command:
+        commands:
+          - show ip int brief
+        provider:
+          host: 192.168.1.33
+          port: 22
+          authorize: yes
+          auth_pass: cisco
+          username: admin
+          password: cisco
+      register: if_data
+
+    - name: Interfaces output
+      debug:
+        var: if_data['stdout_lines'][0]
+...
+Ctrl+x
+y
+
+
+ansible-playbook VerAndHost.yml
+
+ansible-playbook ShowIPIntBrief.yml
+
+
+
+
+
+
+
+
