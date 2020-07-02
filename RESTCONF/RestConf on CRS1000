@@ -1,0 +1,34 @@
+CSR1000 in CML
+
+conf t
+username admin priv 15 secret Cisco!23
+ip http secure-server
+restconf
+int gig 1
+ip add 192.168.1.56 255.255.255.0
+no shut
+router ospf 1
+network 0.0.0.0 255.255.255.255 area 0
+ip route 0.0.0.0 0.0.0.0 192.168.1.1
+router eigrp 1
+net 0.0.0.0
+
+end
+
+Note: from PC on local network
+
+curl -k https://192.168.1.56/restconf/ -u "admin:Cisco!23"
+
+curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/ -u "admin:Cisco!23"
+
+curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/router/ -u "admin:Cisco!23"
+
+curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/router/ospf/ -u "admin:Cisco!23"
+
+curl -H "Accept: application/yang-data+json" -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/interface/ -u "admin:Cisco!23"
+
+curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1 -u "admin:Cisco!23"
+
+curl -H "Accept: application/yang-data+json" -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1 -u "admin:Cisco!23"
+
+
