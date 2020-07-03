@@ -15,6 +15,7 @@ router eigrp 1
 net 0.0.0.0
 
 end
+debug ip http ssl error
 
 Note: from PC on local network
 
