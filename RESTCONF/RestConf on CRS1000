@@ -36,3 +36,5 @@ curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/interface/
 curl -H "Accept: application/yang-data+json" -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1 -u "admin:Cisco!23"
 
 
+
+
