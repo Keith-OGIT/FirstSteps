@@ -3,6 +3,7 @@ CSR1000 in CML
 conf t
 username admin priv 15 secret Cisco!23
 ip http secure-server
+ip http authentication local
 restconf
 int gig 1
 ip add 192.168.1.56 255.255.255.0
