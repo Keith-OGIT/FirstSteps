@@ -27,6 +27,8 @@ curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/router/ -u
 
 curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/router/router-ospf/ -u "admin:Cisco!23"
 
+curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/interface/ -u "admin:Cisco!23"
+
 curl -H "Accept: application/yang-data+json" -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/interface/ -u "admin:Cisco!23"
 
 curl -k https://192.168.1.56/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1 -u "admin:Cisco!23"
